@@ -11,18 +11,20 @@ import plotly.express as px
 
 # Variáveis iniciais
 stations = ['IMACA7', 'IMACA13', 'ICAMPO96', 'IMACA15']
-
 cidade = 'Macaé, RJ'
 
-
+# Confere se o dia anterior foi computado e atualiza os dados
 df = pd.read_csv('data.csv', index_col=0)
 df.columns = scrape.colunas_total
-# Confere se o dia anterior foi computado
+if datas.ontem not in df.values:
+    for station in stations: 
+        data = scrape.scrape_daily_day(station, datas.ontem)
+        data.to_csv('data.csv', mode='a', header=False)
 
-filtered_df = df[df['station'] == 'IMACA7']
-tempdf = filtered_df[['t high', 't low']]
-tempdf = tempdf.apply(pd.to_numeric)
-fig = px.bar(tempdf)
+
+# Lê as informações atualizadas
+df = pd.read_csv('data.csv', index_col=0)
+df.columns = scrape.colunas_total
 
 
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- DASH
@@ -71,6 +73,12 @@ app.layout = Div(
     ]
 )
 
+# Estilo dos gráficos
+bar_colors = ['#ff6361','#58508d']
+font_color = '#ffa600'
+bg_color = '#003f5c'
+
+
 # Pega a variável que foi inserida na data
 @app.callback(
     Output('grafico1', 'figure'),
@@ -86,34 +94,34 @@ def update_output(station):
     # Pega as colunas de temperatura para o gráfico 1
     tempdf = filtered_df2[['t high', 't low']]
     tempdf = tempdf.apply(pd.to_numeric)
-    fig1 = px.bar(tempdf, barmode='group', template="ygridoff",color_discrete_sequence=['red','blue'])
+    fig1 = px.bar(tempdf, barmode='group', template="ygridoff",color_discrete_sequence= bar_colors)
     fig1.update_layout(title='Temperatura',yaxis_title="Temperatura (°F)",
-    xaxis_title="Estação",legend_title="Legenda", plot_bgcolor="#222222", paper_bgcolor='#222222',
-    font_color="#e6e3e3",xaxis_tickfont_size=1)
+    xaxis_title="Estação",legend_title="Legenda", plot_bgcolor=bg_color, paper_bgcolor=bg_color,
+    font_color=font_color,xaxis_tickfont_size=1)
 
     # Pega as colunas de humidade relativa para o gráfico 2
     rhdf = filtered_df2[['rh high', 'rh low']]
     rhdf = rhdf.apply(pd.to_numeric)
-    fig2 = px.bar(rhdf, barmode='group', template="ygridoff",color_discrete_sequence=['red','blue'])
+    fig2 = px.bar(rhdf, barmode='group', template="ygridoff",color_discrete_sequence= bar_colors)
     fig2.update_layout(title='Humidade Relativa',yaxis_title="Humidade (%)",
-    xaxis_title="Estação",legend_title="Legenda", plot_bgcolor="#222222", paper_bgcolor='#222222',
-    font_color="#e6e3e3",xaxis_tickfont_size=1)
+    xaxis_title="Estação",legend_title="Legenda", plot_bgcolor=bg_color, paper_bgcolor=bg_color,
+    font_color=font_color,xaxis_tickfont_size=1)
 
     # Pega as colunas de velocidade do vento para o gráfico 3
     winddf = filtered_df2[['wind high', 'gust high']]
     winddf = winddf.apply(pd.to_numeric)
-    fig3 = px.bar(winddf, barmode='group', template="ygridoff",color_discrete_sequence=['red','blue'])
+    fig3 = px.bar(winddf, barmode='group', template="ygridoff",color_discrete_sequence= bar_colors)
     fig3.update_layout(title='Velocidade do vento',yaxis_title="Velocidade (mph)",
-    xaxis_title="Estação",legend_title="Legenda", plot_bgcolor="#222222", paper_bgcolor='#222222',
-    font_color="#e6e3e3",xaxis_tickfont_size=1)
+    xaxis_title="Estação",legend_title="Legenda", plot_bgcolor=bg_color, paper_bgcolor=bg_color,
+    font_color=font_color,xaxis_tickfont_size=1)
 
     # Pega a coluna de precipitação para o gráfico 4
     precdf = filtered_df2[['prec']]
     precdf = precdf.apply(pd.to_numeric)
-    fig4 = px.bar(precdf, template="ygridoff",color_discrete_sequence=['blue'])
+    fig4 = px.bar(precdf, template="ygridoff",color_discrete_sequence= bar_colors)
     fig4.update_layout(title='Precipitação',yaxis_title="Precipitação (mm)",
-    xaxis_title="Estação",legend_title="Legenda", plot_bgcolor="#222222", paper_bgcolor='#222222',
-    font_color="#e6e3e3",xaxis_tickfont_size=1)
+    xaxis_title="Estação",legend_title="Legenda", plot_bgcolor=bg_color, paper_bgcolor=bg_color,
+    font_color=font_color,xaxis_tickfont_size=1)
     return fig1, fig2, fig3, fig4
 
 # Roda o servidor interno (8050)

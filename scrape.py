@@ -159,7 +159,7 @@ def scrape_daily_day(station, day):
 
     return df
 
-
+# Scraping i dias atrás
 '''
 if __name__ == '__main__':
     i = 5
@@ -171,6 +171,8 @@ if __name__ == '__main__':
         i-=1
 
 '''
+
+'''
 if __name__ == '__main__':
     df = pd.read_csv('data.csv', index_col=0)
     df.columns = colunas_total
@@ -178,3 +180,4 @@ if __name__ == '__main__':
     df1 = df[['t high', 't low']]
     df = df1.apply(pd.to_numeric)
     print(df)
+'''
