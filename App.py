@@ -141,7 +141,9 @@ def update_output(station, celsius):
         fig1 = px.bar(tempdf,x='station',y=['t high', 't low'], barmode='group', template="ygridoff",color_discrete_sequence= bar_colors)
         fig1.update_layout(title='<b>Temperatura</b>',yaxis_title= escala1,
         xaxis_title="Estação",legend_title="Legenda", plot_bgcolor=bg_color, paper_bgcolor=bg_color,
-        font_color=font_color,xaxis_tickfont_size=12, showlegend=False)
+        font_color=font_color,xaxis_tickfont_size=12, showlegend=False, dragmode= False)
+        fig1.update_traces(hovertemplate=None, hoverinfo='skip')
+        
         # Mostra os valores em cima do gráfico
         texts1 = [tempdf['t high'], tempdf['t low']]
 
@@ -154,7 +156,9 @@ def update_output(station, celsius):
         fig2 = px.bar(rhdf, x='station', y=['rh high', 'rh low'], barmode='group', template="ygridoff",color_discrete_sequence= bar_colors)
         fig2.update_layout(title='<b>Humidade Relativa</b>',yaxis_title="<b>Humidade (%)</b>",
         xaxis_title="Estação",legend_title="Legenda", plot_bgcolor=bg_color, paper_bgcolor=bg_color,
-        font_color=font_color,xaxis_tickfont_size=12, showlegend=False)
+        font_color=font_color,xaxis_tickfont_size=12, showlegend=False, dragmode= False)
+        fig2.update_traces(hovertemplate=None, hoverinfo='skip')
+
         # Mostra os valores em cima do gráfico
         texts2 = [rhdf['rh high'], rhdf['rh low']]
         for i, t in enumerate(texts2):
@@ -174,7 +178,9 @@ def update_output(station, celsius):
         fig3 = px.bar(winddf, x= 'station', y= ['gust high', 'wind high'], barmode='group', template="ygridoff",color_discrete_sequence= bar_colors)
         fig3.update_layout(title='<b>Velocidade do vento</b>',yaxis_title= escala2,
         xaxis_title="Estação",legend_title="Legenda", plot_bgcolor=bg_color, paper_bgcolor=bg_color,
-        font_color=font_color,xaxis_tickfont_size=12, showlegend=False)
+        font_color=font_color,xaxis_tickfont_size=12, showlegend=False, dragmode= False)
+        fig3.update_traces(hovertemplate=None, hoverinfo='skip')
+
         # Mostra os valores em cima do gráfico
         texts3 = [winddf['gust high'], winddf['wind high']]
         for i, t in enumerate(texts3):
@@ -193,7 +199,9 @@ def update_output(station, celsius):
         fig4 = px.bar(precdf,x= 'station', y='prec', template="ygridoff",color_discrete_sequence= ['#0091D5'])
         fig4.update_layout(title='<b>Precipitação</b>',yaxis_title= escala3,
         xaxis_title="Estação",legend_title="Legenda", plot_bgcolor=bg_color, paper_bgcolor=bg_color,
-        font_color=font_color,xaxis_tickfont_size=12, showlegend=False)
+        font_color=font_color,xaxis_tickfont_size=12, showlegend=False, dragmode= False)
+        fig4.update_traces(hovertemplate=None, hoverinfo='skip')
+
         # Mostra os valores em cima do gráfico
         texts4 = [precdf['prec']]
         for i, t in enumerate(texts4):
