@@ -1,7 +1,7 @@
 from re import X
 from dash import Dash
 from dash_html_components import H1, Div, P
-from dash_core_components import Graph, DatePickerSingle, Checklist
+from dash_core_components import Graph, RadioItems, Checklist
 from dash.dependencies import Input, Output
 from pandas.core.tools.numeric import to_numeric
 import scrape
@@ -16,10 +16,16 @@ cidade = 'Macaé, RJ'
 # Confere se o dia anterior foi computado e atualiza os dados
 df = pd.read_csv('data.csv', index_col=0)
 df.columns = scrape.colunas_total
+
 if datas.ontem not in df.values:
+    update = 'Updating...'
     for station in stations: 
         data = scrape.scrape_daily_day(station, datas.ontem)
         data.to_csv('data.csv', mode='a', header=False)
+    update = datas.ontem
+else:
+    update = datas.ontem
+
 
 # Lê as informações atualizadas
 df = pd.read_csv('data.csv', index_col=0)
@@ -39,7 +45,7 @@ app.layout = Div(
         Div(
             className='history',
             children=[
-                datas.ontem
+                update
             ]
         ),
 
@@ -48,6 +54,15 @@ app.layout = Div(
         #    id='my-date-picker-single',
         #    date=datas.ontem
         #),
+
+        RadioItems(
+            id='radio',
+            options=[
+                {'label': '°C', 'value': 1},
+                {'label': '°F', 'value': 0}
+            ],
+            value=1
+        ),
 
         Checklist(
             id='checklist',
@@ -77,6 +92,11 @@ bar_colors = ['#EA6A47','#0091D5']
 font_color = '#202020'
 bg_color = '#F1F1F1'
 
+# Condição para conversão de valores (adicionar callback em RadioItems posteriormente)
+# celsius = True
+escala1 = 'Temperatura (°F)'
+escala2 = 'Velocidade (mph)'
+escala3 = "Precipitação (in)"
 
 # Pega a variável que foi inserida na data
 @app.callback(
@@ -84,16 +104,27 @@ bg_color = '#F1F1F1'
     Output('grafico2', 'figure'),
     Output('grafico3', 'figure'),
     Output('grafico4', 'figure'),
-    Input('checklist', 'value'))
-def update_output(station):
+    Input('checklist', 'value'),
+    Input('radio', 'value')
+)
+def update_output(station, celsius):
     # Filtra pela estação
     filtered_df = df[df.station.isin(station)]
     # Filtra pela data
     filtered_df2 = filtered_df[filtered_df['date']==datas.ontem]
     # Pega as colunas de temperatura para o gráfico 1
     tempdf = filtered_df2[['t high', 't low','station']]
+    # Converte valores
+    if celsius:
+        tempdf['t high'] = round((tempdf['t high']-32)*(5/9),1)
+        tempdf['t low'] = round((tempdf['t low']-32)*(5/9), 1)
+        escala1 = 'Temperatura (°C)'
+    else:
+        escala1 = 'Temperatura (°F)'
+
+    # Construção do gráfico
     fig1 = px.bar(tempdf,x='station',y=['t high', 't low'], barmode='group', template="ygridoff",color_discrete_sequence= bar_colors)
-    fig1.update_layout(title='Temperatura',yaxis_title="Temperatura (°F)",
+    fig1.update_layout(title='Temperatura',yaxis_title= escala1,
     xaxis_title="Estação",legend_title="Legenda", plot_bgcolor=bg_color, paper_bgcolor=bg_color,
     font_color=font_color,xaxis_tickfont_size=12, showlegend=False)
     # Mostra os valores em cima do gráfico
@@ -102,10 +133,9 @@ def update_output(station):
         fig1.data[i].text = t
         fig1.data[i].textposition = 'inside'
 
-
-
     # Pega as colunas de humidade relativa para o gráfico 2
     rhdf = filtered_df2[['rh high', 'rh low','station']]
+    # Construção do gráfico
     fig2 = px.bar(rhdf, x='station', y=['rh high', 'rh low'], barmode='group', template="ygridoff",color_discrete_sequence= bar_colors)
     fig2.update_layout(title='Humidade Relativa',yaxis_title="Humidade (%)",
     xaxis_title="Estação",legend_title="Legenda", plot_bgcolor=bg_color, paper_bgcolor=bg_color,
@@ -118,8 +148,16 @@ def update_output(station):
 
     # Pega as colunas de velocidade do vento para o gráfico 3
     winddf = filtered_df2[['gust high', 'wind high','station']]
+    # Conversão de unidades
+    if celsius:
+        winddf['gust high'] = round(winddf['gust high']*1.60934,1)
+        winddf['wind high'] = round(winddf['wind high']*1.60934, 1)
+        escala2 = 'Velocidade (Km/h)'
+    else:
+        escala2 = 'Velocidade (mph)'
+    # Construção do gráfico
     fig3 = px.bar(winddf, x= 'station', y= ['gust high', 'wind high'], barmode='group', template="ygridoff",color_discrete_sequence= bar_colors)
-    fig3.update_layout(title='Velocidade do vento',yaxis_title="Velocidade (mph)",
+    fig3.update_layout(title='Velocidade do vento',yaxis_title= escala2,
     xaxis_title="Estação",legend_title="Legenda", plot_bgcolor=bg_color, paper_bgcolor=bg_color,
     font_color=font_color,xaxis_tickfont_size=12, showlegend=False)
     # Mostra os valores em cima do gráfico
@@ -130,8 +168,15 @@ def update_output(station):
 
     # Pega a coluna de precipitação para o gráfico 4
     precdf = filtered_df2[['prec','station']]
+    if celsius:
+        precdf['prec'] = round(precdf['prec']*25.4,1)
+        escala3 = 'Precipitação (mm)'
+    else:
+        escala3 = "Precipitação (in)"
+        
+    # Construção do gráfico
     fig4 = px.bar(precdf,x= 'station', y='prec', template="ygridoff",color_discrete_sequence= ['#0091D5'])
-    fig4.update_layout(title='Precipitação',yaxis_title="Precipitação (in)",
+    fig4.update_layout(title='Precipitação',yaxis_title= escala3,
     xaxis_title="Estação",legend_title="Legenda", plot_bgcolor=bg_color, paper_bgcolor=bg_color,
     font_color=font_color,xaxis_tickfont_size=12, showlegend=False)
     # Mostra os valores em cima do gráfico
