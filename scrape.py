@@ -171,13 +171,3 @@ if __name__ == '__main__':
         i-=1
 
 '''
-
-'''
-if __name__ == '__main__':
-    df = pd.read_csv('data.csv', index_col=0)
-    df.columns = colunas_total
-    df = df.dropna(axis=1)
-    df1 = df[['t high', 't low']]
-    df = df1.apply(pd.to_numeric)
-    print(df)
-'''
