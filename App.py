@@ -74,9 +74,9 @@ app.layout = Div(
 )
 
 # Estilo dos gráficos
-bar_colors = ['#ff6361','#58508d']
-font_color = '#ffa600'
-bg_color = '#003f5c'
+bar_colors = ['#EA6A47','#0091D5']
+font_color = '#202020'
+bg_color = '#F1F1F1'
 
 
 # Pega a variável que foi inserida na data
