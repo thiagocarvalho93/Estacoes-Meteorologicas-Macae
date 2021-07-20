@@ -3,7 +3,9 @@
     line-height: 60px;
     border-bottom: thin #e6e3e3 solid;
 }
-
+h1,h3{
+    text-shadow: 4px 5px 11px rgba(33,14,9,0.46);
+}
 .app-header .app-header--title {
     font-size: 22px;
     padding-left: 5px;
@@ -13,6 +15,7 @@
     display: block;
     justify-content: center;
     padding: 10px;
+    margin: 1rem;
     background-color:#F1F1F1;
     border-radius: 8px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
@@ -25,3 +28,18 @@
     grid-gap: 5px;
     }
 }
+
+#checklist, #radio {
+    font-size: small;
+    display: flexbox;
+    justify-content: center;
+    margin: 1rem;
+    background-color:#F1F1F1;
+    border-radius: 8px;
+    color: #202020;
+    font-weight: bold;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+
+

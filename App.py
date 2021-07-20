@@ -24,10 +24,9 @@ if datas.ontem not in df.values:
     for station in stations: 
         data = scrape.scrape_daily_day(station, datas.ontem)
         data.to_csv('data.csv', mode='a', header=False)
-    update = datas.ontem
+    update = datas.ontem_br
 else:
-    update = datas.ontem
-
+    update = datas.ontem_br
 
 # Lê as informações atualizadas
 df = pd.read_csv('data.csv', index_col=0)
@@ -37,6 +36,7 @@ df.columns = scrape.colunas_total
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- DASH
 # Define o objeto Dash
 app = Dash(__name__)
+server = app.server
 
 # Layout (como a página em si será apresentada)
 app.layout = Div(
@@ -69,10 +69,10 @@ app.layout = Div(
         Checklist(
             id='checklist',
             options=[
-                {'label': 'Mirante da Lagoa - IMACA7', 'value': 'IMACA7'},
-                {'label': 'Glicério - IMACA13', 'value': 'IMACA13'},
-                {'label': 'Campos dos Goytacazes - ICAMPO96', 'value': 'ICAMPO96'},
-                {'label': 'Colégio Ativo - IMACA15', 'value': 'IMACA15'}
+                {'label': 'IMACA7 (Mirante da Lagoa)', 'value': 'IMACA7'},
+                {'label': 'IMACA13 (Glicério)', 'value': 'IMACA13'},
+                {'label': 'ICAMPO96 (Campos dos Goytacazes)', 'value': 'ICAMPO96'},
+                {'label': 'IMACA15 (Colégio Ativo)', 'value': 'IMACA15'}
             ],
             value=['IMACA7', 'IMACA13','ICAMPO96','IMACA15']
         ),
@@ -133,13 +133,13 @@ def update_output(station, celsius):
         if celsius:
             tempdf['t high'] = round((tempdf['t high']-32)*(5/9),1)
             tempdf['t low'] = round((tempdf['t low']-32)*(5/9), 1)
-            escala1 = 'Temperatura (°C)'
+            escala1 = '<b>Temperatura (°C)</b>'
         else:
-            escala1 = 'Temperatura (°F)'
+            escala1 = '<b>Temperatura (°F)</b>'
 
         # Construção do gráfico
         fig1 = px.bar(tempdf,x='station',y=['t high', 't low'], barmode='group', template="ygridoff",color_discrete_sequence= bar_colors)
-        fig1.update_layout(title='Temperatura',yaxis_title= escala1,
+        fig1.update_layout(title='<b>Temperatura</b>',yaxis_title= escala1,
         xaxis_title="Estação",legend_title="Legenda", plot_bgcolor=bg_color, paper_bgcolor=bg_color,
         font_color=font_color,xaxis_tickfont_size=12, showlegend=False)
         # Mostra os valores em cima do gráfico
@@ -152,7 +152,7 @@ def update_output(station, celsius):
         rhdf = filtered_df2[['rh high', 'rh low','station']]
         # Construção do gráfico
         fig2 = px.bar(rhdf, x='station', y=['rh high', 'rh low'], barmode='group', template="ygridoff",color_discrete_sequence= bar_colors)
-        fig2.update_layout(title='Humidade Relativa',yaxis_title="Humidade (%)",
+        fig2.update_layout(title='<b>Humidade Relativa</b>',yaxis_title="<b>Humidade (%)</b>",
         xaxis_title="Estação",legend_title="Legenda", plot_bgcolor=bg_color, paper_bgcolor=bg_color,
         font_color=font_color,xaxis_tickfont_size=12, showlegend=False)
         # Mostra os valores em cima do gráfico
@@ -167,12 +167,12 @@ def update_output(station, celsius):
         if celsius:
             winddf['gust high'] = round(winddf['gust high']*1.60934,1)
             winddf['wind high'] = round(winddf['wind high']*1.60934, 1)
-            escala2 = 'Velocidade (Km/h)'
+            escala2 = '<b>Velocidade (Km/h)</b>'
         else:
-            escala2 = 'Velocidade (mph)'
+            escala2 = '<b>Velocidade (mph)</b>'
         # Construção do gráfico
         fig3 = px.bar(winddf, x= 'station', y= ['gust high', 'wind high'], barmode='group', template="ygridoff",color_discrete_sequence= bar_colors)
-        fig3.update_layout(title='Velocidade do vento',yaxis_title= escala2,
+        fig3.update_layout(title='<b>Velocidade do vento</b>',yaxis_title= escala2,
         xaxis_title="Estação",legend_title="Legenda", plot_bgcolor=bg_color, paper_bgcolor=bg_color,
         font_color=font_color,xaxis_tickfont_size=12, showlegend=False)
         # Mostra os valores em cima do gráfico
@@ -185,13 +185,13 @@ def update_output(station, celsius):
         precdf = filtered_df2[['prec','station']]
         if celsius:
             precdf['prec'] = round(precdf['prec']*25.4,1)
-            escala3 = 'Precipitação (mm)'
+            escala3 = '<b>Precipitação (mm)</b>'
         else:
-            escala3 = "Precipitação (in)"
+            escala3 = "<b>Precipitação (in)</b>"
 
         # Construção do gráfico
         fig4 = px.bar(precdf,x= 'station', y='prec', template="ygridoff",color_discrete_sequence= ['#0091D5'])
-        fig4.update_layout(title='Precipitação',yaxis_title= escala3,
+        fig4.update_layout(title='<b>Precipitação</b>',yaxis_title= escala3,
         xaxis_title="Estação",legend_title="Legenda", plot_bgcolor=bg_color, paper_bgcolor=bg_color,
         font_color=font_color,xaxis_tickfont_size=12, showlegend=False)
         # Mostra os valores em cima do gráfico

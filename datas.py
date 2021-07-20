@@ -13,8 +13,8 @@ def dia_atras_tabela (dias_atras):
     dia = (datetime.now()-relativedelta(days=dias_atras)).strftime("%Y-%m-%d")
     return dia
 
-
-
+# Formatação brasileira
+ontem_br = (datetime.now(tzinfo) - relativedelta(days=1)).strftime("%d/%m/%Y")
 
 # ------------- Formatação da data na tabela do site
 # Ontem no formato usado na tabela:
