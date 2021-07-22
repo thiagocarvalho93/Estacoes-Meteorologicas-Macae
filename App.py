@@ -1,6 +1,7 @@
+from os import link
 from re import X
 from dash import Dash
-from dash_html_components import H1, Div, P
+from dash_html_components import H1, Div, P, H3
 from dash_core_components import Graph, RadioItems, Checklist
 from dash.dependencies import Input, Output
 from pandas.core.tools.numeric import to_numeric
@@ -29,16 +30,7 @@ app.layout = Div(
         Div(
             className='history',
             children=[
-                'Dados de: ' + api.api_df['date'].iloc[-1]
-            ]
-        ),
-
-        #DatePickerSingle(
-        #    display_format='DD/MM/YYYY',
-        #    id='my-date-picker-single',
-        #    date=datas.ontem
-        #),
-
+                H3('Dados de: ' + api.api_df['date'].iloc[-1]),
         RadioItems(
             id='radio',
             options=[
@@ -57,7 +49,17 @@ app.layout = Div(
                 {'label': 'IMACA15 (Colégio Ativo)', 'value': 'IMACA15'}
             ],
             value=['IMACA7', 'IMACA13','ICAMPO96','IMACA15']
+        )
+        ]
         ),
+
+        #DatePickerSingle(
+        #    display_format='DD/MM/YYYY',
+        #    id='my-date-picker-single',
+        #    date=datas.ontem
+        #),
+
+
 
         Div(
             className='graphs',
@@ -76,7 +78,7 @@ bar_colors = ['#EA6A47','#0091D5']
 font_color = '#202020'
 bg_color = '#F1F1F1'
 
-# Atualiza os gráficos
+# Monta os gráficos de acordo com as variáveis inputadas
 @app.callback(
     Output('grafico1', 'figure'),
     Output('grafico2', 'figure'),
