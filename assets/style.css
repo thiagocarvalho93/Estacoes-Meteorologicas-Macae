@@ -1,3 +1,9 @@
+body {
+    background-color: #1C4E80;
+    text-align: center;
+    color: #F1F1F1;
+    font-family: sans-serif;
+}
 .app-header {
     height: 60px;
     line-height: 60px;
