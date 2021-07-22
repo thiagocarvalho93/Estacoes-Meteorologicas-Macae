@@ -2,7 +2,7 @@ import requests
 import scrape
 import pandas as pd
 supabase_url = 'https://knuchygpvoaktotmwnxi.supabase.co/rest/v1'
-api_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIiwiaWF0IjoxNjI2ODkyNjg0LCJleHAiOjE5NDI0Njg2ODR9.fYz_ZGOQwHfcUkvS3gLNx7F1WLrQ04PyMwYKtlx4rSc'
+api_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYyNjg5MjY4NCwiZXhwIjoxOTQyNDY4Njg0fQ.5L754NoaElmGjJI4IiNt6ZJSXx3_cyFIAB2CvZq-PJE'
 
 supabase_headers = {
     'apikey': api_key,
