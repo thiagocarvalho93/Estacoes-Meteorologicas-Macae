@@ -1,3 +1,4 @@
+from os import closerange
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -151,12 +152,10 @@ def scrape_daily_day(station, day):
 
     df = pd.DataFrame(lista).transpose()
 
-    df.columns=['t high','t low', 't avg', 'dew high', 'dew low', 'dew avg', 'rh high', 'rh low', 'rh avg', 'prec','prec low', 'prec avg', 'wind high', 'wind low', 'wind avg','gust high','gust avg',
-    'w direction 1', 'wind direction 2', 'p high', 'p low', 'p avg']
-    df.insert(0,'station',station)
+    df.columns = ['t_high','t_low', 't_avg', 'dew_high', 'dew_low', 'dew_avg', 'rh_high', 'rh_low', 'rh_avg', 'prec','prec_low', 'prec_avg', 'wind_high', 'wind_low', 'wind_avg','gust_high','gust_avg',
+    'w_direction_1', 'wind_direction_2', 'p_high', 'p_low', 'p_avg']
     df.insert(0,'date', day)
-    df.index = [station + '-' + day]
-
+    #df.insert(0,'id', station)
     return df
 
 # Scraping i dias atrás
@@ -171,3 +170,8 @@ if __name__ == '__main__':
         i-=1
 
 '''
+if __name__ == '__main__':
+    data = scrape_daily_day(stations[3], datas.ontem)
+    json = data.to_json(orient='records')
+    print(stations[3])
+    print(json)
