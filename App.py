@@ -4,8 +4,6 @@ from dash_html_components import H1, Div, P
 from dash_core_components import Graph, RadioItems, Checklist
 from dash.dependencies import Input, Output
 from pandas.core.tools.numeric import to_numeric
-import scrape
-import datas
 import pandas as pd
 import plotly.express as px
 import api
@@ -16,23 +14,6 @@ pd.options.mode.chained_assignment = None
 # Variáveis iniciais
 ids = ['IMACA7', 'IMACA13', 'ICAMPO96', 'IMACA15']
 cidade = 'Macaé, RJ'
-
-# Confere se o dia anterior foi computado e atualiza os dados
-#df = pd.read_csv('data.csv', index_col=0)
-#df.columns = scrape.colunas_total
-#if datas.ontem not in df.values:
-#    update = 'Updating...'
-#    for id in ids: 
-#        data = scrape.scrape_daily_day(id, datas.ontem)
-#        data.to_csv('data.csv', mode='a', header=False)
-#    update = datas.ontem_br
-#else:
-#    update = datas.ontem_br
-
-# Lê as informações atualizadas
-#df = pd.read_csv('data.csv', index_col=0)
-#df.columns = scrape.colunas_total
-
 
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- DASH
 # Define o objeto Dash
@@ -94,12 +75,6 @@ app.layout = Div(
 bar_colors = ['#EA6A47','#0091D5']
 font_color = '#202020'
 bg_color = '#F1F1F1'
-
-# Condição para conversão de valores (adicionar callback em RadioItems posteriormente)
-# celsius = True
-# escala1 = 'Temperatura (°F)'
-# escala2 = 'Velocidade (mph)'
-# escala3 = "Precipitação (in)"
 
 # Pega a variável que foi inserida na data
 @app.callback(

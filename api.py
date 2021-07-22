@@ -1,6 +1,7 @@
 import requests
-import scrape
 import pandas as pd
+
+
 supabase_url = 'https://knuchygpvoaktotmwnxi.supabase.co/rest/v1'
 api_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYyNjg5MjY4NCwiZXhwIjoxOTQyNDY4Njg0fQ.5L754NoaElmGjJI4IiNt6ZJSXx3_cyFIAB2CvZq-PJE'
 

@@ -2,3 +2,8 @@ venv
 *.pyc
 .env
 .DS_Store
+scrape.py
+__pycache__
+.vscode
+datas.py
+data.csv
