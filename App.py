@@ -76,7 +76,7 @@ bar_colors = ['#EA6A47','#0091D5']
 font_color = '#202020'
 bg_color = '#F1F1F1'
 
-# Pega a variável que foi inserida na data
+# Atualiza os gráficos
 @app.callback(
     Output('grafico1', 'figure'),
     Output('grafico2', 'figure'),
@@ -86,6 +86,7 @@ bg_color = '#F1F1F1'
     Input('radio', 'value')
 )
 def update_output(id, celsius):
+
     # Inicia com as figuras vazias
     if len(id) == 0:
         fig1 = dict({
@@ -130,8 +131,8 @@ def update_output(id, celsius):
         texts1 = [tempdf['t_high'], tempdf['t_low']]
 
         for i, t in enumerate(texts1):
-            fig1.data[i].text = t
-            fig1.data[i].textposition = 'inside'    
+            fig1.data[i].text = t 
+            fig1.data[i].textposition = 'outside'    
         # Pega as colunas de humidade relativa para o gráfico 2
         rhdf = filtered_df[['rh_high', 'rh_low','id']]
         #rhdf = filtered_df2[['rh_high', 'rh_low','id']]
@@ -148,7 +149,7 @@ def update_output(id, celsius):
         texts2 = [rhdf['rh_high'], rhdf['rh_low']]
         for i, t in enumerate(texts2):
             fig2.data[i].text = t
-            fig2.data[i].textposition = 'inside'
+            fig2.data[i].textposition = 'outside'
 
         # Pega as colunas de velocidade do vento para o gráfico 3
         winddf = filtered_df[['gust_high', 'wind_high','id']]
@@ -174,7 +175,7 @@ def update_output(id, celsius):
         texts3 = [winddf['gust_high'], winddf['wind_high']]
         for i, t in enumerate(texts3):
             fig3.data[i].text = t
-            fig3.data[i].textposition = 'inside'
+            fig3.data[i].textposition = 'outside'
 
         # Pega a coluna de precipitação para o gráfico 4
         precdf = filtered_df[['prec','id']]
@@ -198,10 +199,11 @@ def update_output(id, celsius):
         texts4 = [precdf['prec']]
         for i, t in enumerate(texts4):
             fig4.data[i].text = t
-            fig4.data[i].textposition = 'inside'
+            fig4.data[i].textposition = 'outside'
 
     # Retorna os gráficos
     return fig1, fig2, fig3, fig4
-# Roda o servidor interno (8050)
+
+# Roda o app no servidor
 if __name__ == '__main__':
     app.run_server(debug=True)
