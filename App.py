@@ -139,8 +139,10 @@ def update_output(id, celsius):
             tempdf['t_high'] = round((tempdf['t_high']-32)*(5/9),1)
             tempdf['t_low'] = round((tempdf['t_low']-32)*(5/9), 1)
             escala1 = '<b>Temperatura (°C)</b>'
+            scalerange = [0,50]
         else:
             escala1 = '<b>Temperatura (°F)</b>'
+            scalerange = [32,122]
 
         # Construção do gráfico
         fig1 = px.bar(tempdf,x='id',y=['t_high', 't_low'], barmode='group', template="ygridoff",color_discrete_sequence= bar_colors)
@@ -148,7 +150,7 @@ def update_output(id, celsius):
         xaxis_title="Estação",legend_title="Legenda", plot_bgcolor=bg_color, paper_bgcolor=bg_color,
         font_color=font_color,xaxis_tickfont_size=12, showlegend=False, dragmode= False)
         fig1.update_traces(hovertemplate=None, hoverinfo='skip')
-        
+        fig1.update_layout(yaxis_range=scalerange)
         # Mostra os valores em cima do gráfico
         texts1 = [tempdf['t_high'], tempdf['t_low']]
 
@@ -163,7 +165,9 @@ def update_output(id, celsius):
         fig2.update_layout(title='<b>Humidade Relativa</b>',yaxis_title="<b>Humidade (%)</b>",
         xaxis_title="Estação",legend_title="Legenda", plot_bgcolor=bg_color, paper_bgcolor=bg_color,
         font_color=font_color,xaxis_tickfont_size=12, showlegend=False, dragmode= False)
+        fig2.update_layout(yaxis_range=[0,100])
         fig2.update_traces(hovertemplate=None, hoverinfo='skip')
+
 
         # Mostra os valores em cima do gráfico
         texts2 = [rhdf['rh_high'], rhdf['rh_low']]
@@ -179,13 +183,16 @@ def update_output(id, celsius):
             winddf['gust_high'] = round(winddf['gust_high']*1.60934,1)
             winddf['wind_high'] = round(winddf['wind_high']*1.60934, 1)
             escala2 = '<b>Velocidade (Km/h)</b>'
+            scalerange3 = [0,200]
         else:
             escala2 = '<b>Velocidade (mph)</b>'
+            scalerange3 = [0,125]
         # Construção do gráfico
         fig3 = px.bar(winddf, x= 'id', y= ['gust_high', 'wind_high'], barmode='group', template="ygridoff",color_discrete_sequence= bar_colors)
         fig3.update_layout(title='<b>Velocidade do vento</b>',yaxis_title= escala2,
         xaxis_title="Estação",legend_title="Legenda", plot_bgcolor=bg_color, paper_bgcolor=bg_color,
         font_color=font_color,xaxis_tickfont_size=12, showlegend=False, dragmode= False)
+        fig3.update_layout(yaxis_range=scalerange3)
         fig3.update_traces(hovertemplate=None, hoverinfo='skip')
 
         # Mostra os valores em cima do gráfico
@@ -200,14 +207,16 @@ def update_output(id, celsius):
         if celsius:
             precdf['prec'] = round(precdf['prec']*25.4,1)
             escala3 = '<b>Precipitação (mm)</b>'
+            scalerange4 = [0,150]
         else:
             escala3 = "<b>Precipitação (in)</b>"
-
+            scalerange4 = [0,8]
         # Construção do gráfico
         fig4 = px.bar(precdf,x= 'id', y='prec', template="ygridoff",color_discrete_sequence= ['#0091D5'])
         fig4.update_layout(title='<b>Precipitação</b>',yaxis_title= escala3,
         xaxis_title="Estação",legend_title="Legenda", plot_bgcolor=bg_color, paper_bgcolor=bg_color,
         font_color=font_color,xaxis_tickfont_size=12, showlegend=False, dragmode= False)
+        fig4.update_layout(yaxis_range=scalerange4)
         fig4.update_traces(hovertemplate=None, hoverinfo='skip')
 
         # Mostra os valores em cima do gráfico
