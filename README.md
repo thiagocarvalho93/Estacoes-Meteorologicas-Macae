@@ -1,1 +1,1 @@
-Este projeto tem por objetivo desenvolver um Dashboard interativo contendo os dados climáticos de todas as estações meteorológicas de Macaé-RJ e região. No percurso, adquiri conhecimentos na ferramenta do Python **Plotly-Dash**, conceitos de *API Rest*, *Web Scraping*, CSS, Bootstrap, entre outros.
+Este projeto tem por objetivo desenvolver um Dashboard interativo contendo os dados climáticos de todas as estações meteorológicas de Macaé-RJ e região.
